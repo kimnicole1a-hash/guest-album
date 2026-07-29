@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>The Guest Album</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Great+Vibes&family=Karla:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --ink:#2B3327;
+    --parchment:#FDFBF5;
+    --parchment-2:#F3ECD9;
+    --gold:#B98B3E;
+    --gold-deep:#8C6A2E;
+    --blush:#D9A9A0;
+    --sage:#6E7F63;
+    --cream:#F8F4E9;
+    --sky:#E4EEF2;
+    --shadow: 0 10px 30px rgba(43,51,39,0.12);
+    --radius: 4px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: linear-gradient(180deg, var(--sky) 0%, var(--cream) 45%, #FBF7EC 100%);
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(217,169,160,0.28), transparent 45%),
+      radial-gradient(circle at 90% 10%, rgba(185,139,62,0.20), transparent 40%),
+      linear-gradient(180deg, var(--sky) 0%, var(--cream) 45%, #FBF7EC 100%);
+    color: var(--ink);
+    font-family:'Karla', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px 80px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    text-align:center;
+    padding:56px 20px 40px;
+    animation: rise 0.8s ease both;
+  }
+  @keyframes rise{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    letter-spacing:0.28em;
+    font-size:11px;
+    color: var(--gold-deep);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1.names{
+    font-family:'Great Vibes', cursive;
+    font-weight:400;
+    font-size:clamp(52px, 10vw, 92px);
+    line-height:1.15;
+    margin:0 0 6px;
+    color: var(--ink);
+  }
+  h1.names em{
+    font-style:normal;
+    color: var(--gold-deep);
+    padding:0 6px;
+  }
+  .subline{
+    font-size:15px;
+    color: rgba(43,51,39,0.68);
+    max-width:440px;
+    margin:0 auto 30px;
+    line-height:1.5;
+  }
+
+  /* ---------- Upload card ---------- */
+  .upload-card{
+    background: #FFFFFF;
+    color: var(--ink);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    max-width: 460px;
+    margin: 0 auto;
+    position:relative;
+    overflow:hidden;
+  }
+  .upload-card::before{
+    content:"";
+    position:absolute; inset:0;
+    border: 1px solid rgba(185,139,62,0.22);
+    border-radius:10px;
+    pointer-events:none;
+  }
+  .name-row{
+    display:flex; gap:8px; margin-bottom:14px;
+  }
+  .name-row input{
+    flex:1;
+    font-family:'Karla', sans-serif;
+    font-size:14px;
+    padding:10px 12px;
+    border-radius:6px;
+    border:1px solid rgba(27,42,32,0.18);
+    background: var(--cream);
+    color: var(--ink);
+  }
+  .name-row input:focus{outline:2px solid var(--gold); outline-offset:1px;}
+
+  .btn-add{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    background: var(--ink);
+    color: var(--cream);
+    font-family:'Karla', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.02em;
+    padding:16px 18px;
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-add:hover{background:#26392C;}
+  .btn-add:active{transform: scale(0.98);}
+  .btn-add:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .btn-add svg{width:20px;height:20px;flex-shrink:0;}
+
+  .upload-hint{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color: rgba(27,42,32,0.55);
+    text-align:center;
+    margin-top:12px;
+    letter-spacing:0.02em;
+  }
+
+  .status-msg{
+    text-align:center;
+    font-size:13px;
+    margin-top:12px;
+    min-height:18px;
+    color: var(--sage);
+    font-weight:700;
+  }
+
+  /* ---------- Divider ---------- */
+  .divider{
+    display:flex; align-items:center; gap:14px;
+    max-width:900px; margin:56px auto 8px; padding:0 20px;
+    color: rgba(43,51,39,0.45);
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+  .divider::before, .divider::after{
+    content:""; flex:1; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(185,139,62,0.55), transparent);
+  }
+
+  /* ---------- Garland gallery ---------- */
+  .garland{
+    position:relative;
+    padding:50px 10px 10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:34px 22px;
+    justify-content:center;
+  }
+  .string-svg{
+    position:absolute;
+    top:14px; left:0; right:0;
+    width:100%; height:26px;
+    pointer-events:none;
+  }
+  .photo-peg{
+    background:#fff;
+    padding:8px 8px 22px;
+    border-radius:2px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+    width:150px;
+    cursor:pointer;
+    position:relative;
+    transition: transform 0.2s ease;
+  }
+  .photo-peg:hover{transform: translateY(-4px) rotate(0deg) !important;}
+  .photo-peg img{
+    width:100%; height:150px; object-fit:cover; display:block; background:#e7e2d4;
+  }
+  .photo-peg .cap{
+    position:absolute; bottom:5px; left:8px; right:8px;
+    font-family:'Space Mono', monospace;
+    font-size:9px;
+    color:#8a8578;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .clip{
+    position:absolute; top:-9px; left:50%; transform:translateX(-50%);
+    width:16px; height:20px;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .photo-peg{ animation: sway 5s ease-in-out infinite; }
+    .photo-peg:nth-child(odd){ animation-duration: 6.2s; }
+    .photo-peg:nth-child(3n){ animation-duration: 7s; }
+  }
+  @keyframes sway{
+    0%,100%{ transform: rotate(var(--rot,0deg)); }
+    50%{ transform: rotate(calc(var(--rot,0deg) * -0.6)); }
+  }
+
+  .empty-state{
+    text-align:center;
+    color: rgba(43,51,39,0.5);
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:18px;
+    padding:30px 20px 10px;
+    width:100%;
+  }
+
+  /* ---------- Footer / QR ---------- */
+  .footer{
+    text-align:center;
+    margin-top:64px;
+    padding-top:36px;
+    border-top:1px solid rgba(43,51,39,0.14);
+  }
+  .qr-box{
+    background: #FFFFFF;
+    display:inline-block;
+    padding:14px;
+    border-radius:8px;
+    box-shadow: var(--shadow);
+  }
+  .footer p.label{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color: var(--gold-deep);
+    margin:18px 0 6px;
+  }
+  .link-row{
+    display:flex; gap:8px; justify-content:center; align-items:center;
+    flex-wrap:wrap; margin-top:6px;
+  }
+  .link-row input{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    padding:8px 10px;
+    border-radius:6px;
+    border:1px solid rgba(43,51,39,0.2);
+    background: rgba(255,255,255,0.7);
+    color: var(--ink);
+    width:min(320px, 60vw);
+  }
+  .link-row button{
+    font-family:'Karla', sans-serif;
+    font-size:12px;
+    font-weight:700;
+    padding:9px 14px;
+    border-radius:6px;
+    border:1px solid var(--gold-deep);
+    background:transparent;
+    color: var(--gold-deep);
+    cursor:pointer;
+  }
+  .link-row button:hover{background: rgba(185,139,62,0.14);}
+  .publish-note{
+    max-width:420px; margin:22px auto 0;
+    font-size:12px;
+    color: rgba(43,51,39,0.5);
+    line-height:1.5;
+  }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; background: rgba(15,22,17,0.92);
+    display:none; align-items:center; justify-content:center;
+    z-index:100; padding:30px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:min(90vw,700px); max-height:80vh; border-radius:4px; box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+  .lightbox-cap{
+    position:absolute; bottom:30px; left:0; right:0; text-align:center;
+    font-family:'Space Mono', monospace; font-size:12px; color: var(--cream); opacity:0.8;
+  }
+  .lightbox-close{
+    position:absolute; top:20px; right:26px;
+    color: var(--cream); font-size:28px; cursor:pointer; line-height:1;
+    background:none; border:none;
+  }
+
+  @media (max-width:480px){
+    .photo-peg{width:44%;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== EDIT THESE TWO LINES FOR YOUR WEDDING ====== -->
+<script>
+  const COUPLE_NAMES_HTML = "Mary Jane <em>&</em> Ariel";
+  const WEDDING_DATE = "08 . 21 . 2026";
+</script>
+<!-- ==================================================== -->
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">A live guest album</div>
+    <h1 class="names" id="namesHeading"></h1>
+    <div class="subline" id="dateLine"></div>
+    <p class="subline">Snap a photo tonight and hang it on the line — everyone's memories, in one place, as the night unfolds.</p>
+  </div>
+
+  <div class="upload-card">
+    <div class="name-row">
+      <input type="text" id="guestName" placeholder="Your name (optional)" maxlength="40">
+    </div>
+    <button class="btn-add" id="addBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      Add your photos
+    </button>
+    <input type="file" id="fileInput" accept="image/*" multiple capture="environment" hidden>
+    <div class="upload-hint">JPEG or PNG · uploads privately compress before sending</div>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+  <div class="divider">The clothesline</div>
+
+  <div class="garland" id="garland">
+    <div class="empty-state" id="emptyState">Nothing hanging yet — be the first to pin a memory.</div>
+  </div>
+
+  <div class="footer">
+    <div class="qr-box" id="qrBox"></div>
+    <p class="label">Scan to open the album</p>
+    <div class="link-row">
+      <input type="text" id="pageLink" readonly>
+      <button id="copyBtn">Copy link</button>
+    </div>
+    <p class="publish-note">Hosting this page? Publish it first so the link and QR code point to a permanent address before you print it for the tables.</p>
+  </div>
+
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-cap" id="lightboxCap"></div>
+</div>
+
+<script>
+document.getElementById('namesHeading').innerHTML = COUPLE_NAMES_HTML;
+document.getElementById('dateLine').textContent = WEDDING_DATE;
+
+// ---------- QR + link ----------
+const pageUrl = window.location.href;
+document.getElementById('pageLink').value = pageUrl;
+new QRCode(document.getElementById('qrBox'), {
+  text: pageUrl,
+  width: 168,
+  height: 168,
+  colorDark: "#1B2A20",
+  colorLight: "#F8F4E9",
+  correctLevel: QRCode.CorrectLevel.M
+});
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  try{
+    await navigator.clipboard.writeText(pageUrl);
+    const btn = document.getElementById('copyBtn');
+    const old = btn.textContent;
+    btn.textContent = "Copied";
+    setTimeout(()=>btn.textContent = old, 1500);
+  }catch(e){ /* clipboard may be unavailable; input is selectable manually */ }
+});
+
+// ---------- Helpers ----------
+function hashAngle(str){
+  let h = 0;
+  for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) | 0; }
+  const norm = (Math.abs(h) % 160) / 160; // 0..1
+  return (norm * 16) - 8; // -8..8 deg
+}
+
+function timeAgoLabel(ts){
+  const d = new Date(ts);
+  let h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; if(h===0) h = 12;
+  m = m < 10 ? '0'+m : m;
+  return h+':'+m+' '+ampm;
+}
+
+// ---------- Gallery state ----------
+const seen = new Set();
+const garlandEl = document.getElementById('garland');
+const emptyState = document.getElementById('emptyState');
+
+function renderPhoto(key, data){
+  if(seen.has(key)) return;
+  seen.add(key);
+  emptyState.style.display = 'none';
+
+  const card = document.createElement('div');
+  card.className = 'photo-peg';
+  const rot = hashAngle(key);
+  card.style.setProperty('--rot', rot.toFixed(1)+'deg');
+  card.style.transform = 'rotate('+rot.toFixed(1)+'deg)';
+
+  const img = document.createElement('img');
+  img.src = data.img;
+  img.alt = data.name ? ('Photo from '+data.name) : 'Wedding guest photo';
+  card.appendChild(img);
+
+  const clip = document.createElement('div');
+  clip.className = 'clip';
+  clip.innerHTML = '<svg viewBox="0 0 16 20"><rect x="6" y="0" width="4" height="9" fill="#B98B3E"/><circle cx="8" cy="12" r="6" fill="#8a6a34"/></svg>';
+  card.appendChild(clip);
+
+  const cap = document.createElement('div');
+  cap.className = 'cap';
+  cap.textContent = (data.name ? data.name+' · ' : '') + timeAgoLabel(data.ts);
+  card.appendChild(cap);
+
+  card.addEventListener('click', () => openLightbox(data));
+
+  garlandEl.appendChild(card);
+}
+
+function openLightbox(data){
+  document.getElementById('lightboxImg').src = data.img;
+  document.getElementById('lightboxCap').textContent = (data.name ? data.name+' · ' : '') + timeAgoLabel(data.ts);
+  document.getElementById('lightbox').classList.add('open');
+}
+document.getElementById('lightboxClose').addEventListener('click', ()=>{
+  document.getElementById('lightbox').classList.remove('open');
+});
+document.getElementById('lightbox').addEventListener('click', (e)=>{
+  if(e.target.id === 'lightbox') e.currentTarget.classList.remove('open');
+});
+
+async function refreshGallery(){
+  try{
+    const listing = await window.storage.list('photo:', true);
+    if(!listing || !listing.keys) return;
+    const newKeys = listing.keys.filter(k => !seen.has(k));
+    // fetch oldest-missing first isn't guaranteed ordering; sort by embedded timestamp in key
+    newKeys.sort();
+    for(const key of newKeys){
+      try{
+        const res = await window.storage.get(key, true);
+        if(res && res.value){
+          const data = JSON.parse(res.value);
+          renderPhoto(key, data);
+        }
+      }catch(e){ /* skip a bad entry */ }
+    }
+  }catch(e){ /* storage not available right now; try again next interval */ }
+}
+
+// ---------- Upload flow ----------
+const addBtn = document.getElementById('addBtn');
+const fileInput = document.getElementById('fileInput');
+const statusMsg = document.getElementById('statusMsg');
+const guestNameInput = document.getElementById('guestName');
+
+addBtn.addEventListener('click', () => fileInput.click());
+
+function compressImage(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Could not read file'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Could not decode image'));
+      img.onload = () => {
+        const maxDim = 1600;
+        let { width, height } = img;
+        if(width > maxDim || height > maxDim){
+          if(width > height){ height = Math.round(height * (maxDim/width)); width = maxDim; }
+          else{ width = Math.round(width * (maxDim/height)); height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+fileInput.addEventListener('change', async (e) => {
+  const files = Array.from(e.target.files || []);
+  if(files.length === 0) return;
+  const guestName = guestNameInput.value.trim().slice(0, 40);
+  let okCount = 0, failCount = 0;
+  statusMsg.textContent = 'Uploading ' + files.length + ' photo' + (files.length>1?'s':'') + '...';
+  addBtn.disabled = true;
+
+  for(const file of files){
+    try{
+      const dataUrl = await compressImage(file);
+      const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
+      const key = 'photo:' + id;
+      const payload = JSON.stringify({ img: dataUrl, name: guestName, ts: Date.now() });
+      const result = await window.storage.set(key, payload, true);
+      if(result){
+        renderPhoto(key, { img: dataUrl, name: guestName, ts: Date.now() });
+        okCount++;
+      } else {
+        failCount++;
+      }
+    }catch(err){
+      failCount++;
+    }
+  }
+
+  addBtn.disabled = false;
+  fileInput.value = '';
+  if(failCount === 0){
+    statusMsg.textContent = okCount + ' photo' + (okCount>1?'s':'') + ' added to the line!';
+  } else if(okCount === 0){
+    statusMsg.textContent = "Couldn't upload — check your connection and try again.";
+  } else {
+    statusMsg.textContent = okCount + ' added, ' + failCount + ' failed. Try the rest again?';
+  }
+  setTimeout(()=> statusMsg.textContent='', 4000);
+});
+
+// ---------- Boot ----------
+refreshGallery();
+setInterval(refreshGallery, 6000);
+</script>
+
+</body>
+</html>
