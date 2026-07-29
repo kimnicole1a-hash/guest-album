@@ -360,24 +360,27 @@ document.getElementById('namesHeading').innerHTML = COUPLE_NAMES_HTML;
 document.getElementById('dateLine').textContent = WEDDING_DATE;
 
 // ---------- QR + link ----------
-const pageUrl = window.location.href;
+const pageUrl = "https://kimnicole1a-hash.github.io/guest-album/";
+
 document.getElementById('pageLink').value = pageUrl;
+
 new QRCode(document.getElementById('qrBox'), {
   text: pageUrl,
   width: 168,
   height: 168,
-  colorDark: "#1B2A20",
+  colorDark: "#880000",
   colorLight: "#F8F4E9",
   correctLevel: QRCode.CorrectLevel.M
 });
+
 document.getElementById('copyBtn').addEventListener('click', async () => {
-  try{
+  try {
     await navigator.clipboard.writeText(pageUrl);
     const btn = document.getElementById('copyBtn');
     const old = btn.textContent;
     btn.textContent = "Copied";
-    setTimeout(()=>btn.textContent = old, 1500);
-  }catch(e){ /* clipboard may be unavailable; input is selectable manually */ }
+    setTimeout(() => btn.textContent = old, 1500);
+  } catch (e) { }
 });
 
 // ---------- Helpers ----------
