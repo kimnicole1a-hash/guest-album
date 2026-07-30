@@ -9,33 +9,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root{
-    --ink:#2B3327;
-    --parchment:#FDFBF5;
-    --parchment-2:#F3ECD9;
-    --gold:#B98B3E;
-    --gold-deep:#8C6A2E;
-    --blush:#D9A9A0;
-    --sage:#6E7F63;
-    --cream:#F8F4E9;
-    --sky:#E4EEF2;
-    --shadow: 0 10px 30px rgba(43,51,39,0.12);
-    --radius: 4px;
+    --ink:#2E2420;
+    --cream:#FBF3E7;
+    --cream-2:#F3E2CB;
+    --red:#8C1D26;
+    --red-deep:#6E1720;
+    --blush:#D98E90;
+    --shadow: 0 10px 30px rgba(46,36,32,0.14);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background: linear-gradient(180deg, var(--sky) 0%, var(--cream) 45%, #FBF7EC 100%);
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
     background-image:
-      radial-gradient(circle at 15% 0%, rgba(217,169,160,0.28), transparent 45%),
-      radial-gradient(circle at 90% 10%, rgba(185,139,62,0.20), transparent 40%),
-      linear-gradient(180deg, var(--sky) 0%, var(--cream) 45%, #FBF7EC 100%);
+      radial-gradient(circle at 12% 0%, rgba(140,29,38,0.10), transparent 45%),
+      radial-gradient(circle at 92% 12%, rgba(217,142,144,0.22), transparent 40%),
+      linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
     color: var(--ink);
     font-family:'Karla', sans-serif;
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:900px;margin:0 auto;padding:0 20px 80px;}
-
+ 
   /* ---------- Hero ---------- */
   .hero{
     text-align:center;
@@ -50,7 +46,7 @@
     font-family:'Space Mono', monospace;
     letter-spacing:0.28em;
     font-size:11px;
-    color: var(--gold-deep);
+    color: var(--red-deep);
     text-transform:uppercase;
     margin-bottom:14px;
   }
@@ -64,17 +60,17 @@
   }
   h1.names em{
     font-style:normal;
-    color: var(--gold-deep);
+    color: var(--red-deep);
     padding:0 6px;
   }
   .subline{
     font-size:15px;
-    color: rgba(43,51,39,0.68);
+    color: rgba(46,36,32,0.68);
     max-width:440px;
     margin:0 auto 30px;
     line-height:1.5;
   }
-
+ 
   /* ---------- Upload card ---------- */
   .upload-card{
     background: #FFFFFF;
@@ -90,7 +86,7 @@
   .upload-card::before{
     content:"";
     position:absolute; inset:0;
-    border: 1px solid rgba(185,139,62,0.22);
+    border: 1px solid rgba(140,29,38,0.22);
     border-radius:10px;
     pointer-events:none;
   }
@@ -103,17 +99,17 @@
     font-size:14px;
     padding:10px 12px;
     border-radius:6px;
-    border:1px solid rgba(27,42,32,0.18);
+    border:1px solid rgba(46,36,32,0.18);
     background: var(--cream);
     color: var(--ink);
   }
-  .name-row input:focus{outline:2px solid var(--gold); outline-offset:1px;}
-
+  .name-row input:focus{outline:2px solid var(--red); outline-offset:1px;}
+ 
   .btn-add{
     width:100%;
     border:none;
     cursor:pointer;
-    background: var(--ink);
+    background: var(--red);
     color: var(--cream);
     font-family:'Karla', sans-serif;
     font-weight:700;
@@ -124,34 +120,35 @@
     display:flex; align-items:center; justify-content:center; gap:10px;
     transition: transform 0.15s ease, background 0.15s ease;
   }
-  .btn-add:hover{background:#26392C;}
+  .btn-add:hover{background: var(--red-deep);}
   .btn-add:active{transform: scale(0.98);}
-  .btn-add:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .btn-add:disabled{opacity:0.6; cursor:default;}
+  .btn-add:focus-visible{outline:3px solid var(--red-deep); outline-offset:2px;}
   .btn-add svg{width:20px;height:20px;flex-shrink:0;}
-
+ 
   .upload-hint{
     font-family:'Space Mono', monospace;
     font-size:11px;
-    color: rgba(27,42,32,0.55);
+    color: rgba(46,36,32,0.55);
     text-align:center;
     margin-top:12px;
     letter-spacing:0.02em;
   }
-
+ 
   .status-msg{
     text-align:center;
     font-size:13px;
     margin-top:12px;
     min-height:18px;
-    color: var(--sage);
+    color: var(--red-deep);
     font-weight:700;
   }
-
+ 
   /* ---------- Divider ---------- */
   .divider{
     display:flex; align-items:center; gap:14px;
     max-width:900px; margin:56px auto 8px; padding:0 20px;
-    color: rgba(43,51,39,0.45);
+    color: rgba(46,36,32,0.45);
     font-family:'Space Mono', monospace;
     font-size:11px;
     letter-spacing:0.2em;
@@ -159,9 +156,9 @@
   }
   .divider::before, .divider::after{
     content:""; flex:1; height:1px;
-    background: linear-gradient(90deg, transparent, rgba(185,139,62,0.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(140,29,38,0.5), transparent);
   }
-
+ 
   /* ---------- Garland gallery ---------- */
   .garland{
     position:relative;
@@ -171,17 +168,11 @@
     gap:34px 22px;
     justify-content:center;
   }
-  .string-svg{
-    position:absolute;
-    top:14px; left:0; right:0;
-    width:100%; height:26px;
-    pointer-events:none;
-  }
   .photo-peg{
     background:#fff;
     padding:8px 8px 22px;
     border-radius:2px;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
     width:150px;
     cursor:pointer;
     position:relative;
@@ -189,13 +180,13 @@
   }
   .photo-peg:hover{transform: translateY(-4px) rotate(0deg) !important;}
   .photo-peg img{
-    width:100%; height:150px; object-fit:cover; display:block; background:#e7e2d4;
+    width:100%; height:150px; object-fit:cover; display:block; background:#eee1d6;
   }
   .photo-peg .cap{
     position:absolute; bottom:5px; left:8px; right:8px;
     font-family:'Space Mono', monospace;
     font-size:9px;
-    color:#8a8578;
+    color:#8a7d78;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .clip{
@@ -211,23 +202,23 @@
     0%,100%{ transform: rotate(var(--rot,0deg)); }
     50%{ transform: rotate(calc(var(--rot,0deg) * -0.6)); }
   }
-
+ 
   .empty-state{
     text-align:center;
-    color: rgba(43,51,39,0.5);
+    color: rgba(46,36,32,0.5);
     font-family:'Fraunces', serif;
     font-style:italic;
     font-size:18px;
     padding:30px 20px 10px;
     width:100%;
   }
-
+ 
   /* ---------- Footer / QR ---------- */
   .footer{
     text-align:center;
     margin-top:64px;
     padding-top:36px;
-    border-top:1px solid rgba(43,51,39,0.14);
+    border-top:1px solid rgba(46,36,32,0.14);
   }
   .qr-box{
     background: #FFFFFF;
@@ -241,7 +232,7 @@
     font-size:11px;
     letter-spacing:0.15em;
     text-transform:uppercase;
-    color: var(--gold-deep);
+    color: var(--red-deep);
     margin:18px 0 6px;
   }
   .link-row{
@@ -253,7 +244,7 @@
     font-size:12px;
     padding:8px 10px;
     border-radius:6px;
-    border:1px solid rgba(43,51,39,0.2);
+    border:1px solid rgba(46,36,32,0.2);
     background: rgba(255,255,255,0.7);
     color: var(--ink);
     width:min(320px, 60vw);
@@ -264,22 +255,22 @@
     font-weight:700;
     padding:9px 14px;
     border-radius:6px;
-    border:1px solid var(--gold-deep);
+    border:1px solid var(--red-deep);
     background:transparent;
-    color: var(--gold-deep);
+    color: var(--red-deep);
     cursor:pointer;
   }
-  .link-row button:hover{background: rgba(185,139,62,0.14);}
+  .link-row button:hover{background: rgba(140,29,38,0.12);}
   .publish-note{
     max-width:420px; margin:22px auto 0;
     font-size:12px;
-    color: rgba(43,51,39,0.5);
+    color: rgba(46,36,32,0.5);
     line-height:1.5;
   }
-
+ 
   /* ---------- Lightbox ---------- */
   .lightbox{
-    position:fixed; inset:0; background: rgba(15,22,17,0.92);
+    position:fixed; inset:0; background: rgba(20,12,10,0.92);
     display:none; align-items:center; justify-content:center;
     z-index:100; padding:30px;
   }
@@ -287,37 +278,41 @@
   .lightbox img{max-width:min(90vw,700px); max-height:80vh; border-radius:4px; box-shadow:0 20px 60px rgba(0,0,0,0.5);}
   .lightbox-cap{
     position:absolute; bottom:30px; left:0; right:0; text-align:center;
-    font-family:'Space Mono', monospace; font-size:12px; color: var(--cream); opacity:0.8;
+    font-family:'Space Mono', monospace; font-size:12px; color: var(--cream); opacity:0.85;
   }
   .lightbox-close{
     position:absolute; top:20px; right:26px;
     color: var(--cream); font-size:28px; cursor:pointer; line-height:1;
     background:none; border:none;
   }
-
+ 
   @media (max-width:480px){
     .photo-peg{width:44%;}
   }
 </style>
 </head>
 <body>
-
-<!-- ====== EDIT THESE TWO LINES FOR YOUR WEDDING ====== -->
+ 
+<!-- ====== EDIT THESE FOR YOUR WEDDING ====== -->
 <script>
   const COUPLE_NAMES_HTML = "Mary Jane <em>&</em> Ariel";
   const WEDDING_DATE = "08 . 21 . 2026";
+ 
+  // Paste the Web App URL you get after deploying the Google Apps Script
+  // (see the Code.gs file + setup steps provided alongside this page).
+  const DRIVE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxH8mk1JVzRvi4l1E1e_WG3HumrS0S87ng0lXabfW7P5mO9OA_SxF3xW4W8P3sLae89/exec";
 </script>
-<!-- ==================================================== -->
-
+<!-- ========================================== -->
+ 
 <div class="wrap">
-
+ 
   <div class="hero">
     <div class="eyebrow">A live guest album</div>
     <h1 class="names" id="namesHeading"></h1>
     <div class="subline" id="dateLine"></div>
-    <p class="subline">Snap a photo tonight and hang it on the line — everyone's memories, in one place, as the night unfolds.</p>
+    <p class="subline">Snap a photo today and hang it on the line — everyone's memories, in one place, as the day unfolds.</p>
   </div>
-
+ 
   <div class="upload-card">
     <div class="name-row">
       <input type="text" id="guestName" placeholder="Your name (optional)" maxlength="40">
@@ -327,16 +322,16 @@
       Add your photos
     </button>
     <input type="file" id="fileInput" accept="image/*" multiple capture="environment" hidden>
-    <div class="upload-hint">JPEG or PNG · uploads privately compress before sending</div>
+    <div class="upload-hint">JPEG or PNG · saved straight to the couple's Google Drive</div>
     <div class="status-msg" id="statusMsg"></div>
   </div>
-
+ 
   <div class="divider">The clothesline</div>
-
+ 
   <div class="garland" id="garland">
     <div class="empty-state" id="emptyState">Nothing hanging yet — be the first to pin a memory.</div>
   </div>
-
+ 
   <div class="footer">
     <div class="qr-box" id="qrBox"></div>
     <p class="label">Scan to open the album</p>
@@ -344,53 +339,51 @@
       <input type="text" id="pageLink" readonly>
       <button id="copyBtn">Copy link</button>
     </div>
-    <p class="publish-note">Hosting this page? Publish it first so the link and QR code point to a permanent address before you print it for the tables.</p>
+    <p class="publish-note">This QR code always points at wherever this page is currently hosted.</p>
   </div>
-
+ 
 </div>
-
+ 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">&times;</button>
   <img id="lightboxImg" src="" alt="">
   <div class="lightbox-cap" id="lightboxCap"></div>
 </div>
-
+ 
 <script>
 document.getElementById('namesHeading').innerHTML = COUPLE_NAMES_HTML;
 document.getElementById('dateLine').textContent = WEDDING_DATE;
-
+ 
+const SCRIPT_CONFIGURED = DRIVE_SCRIPT_URL.indexOf('PASTE_YOUR') === -1;
+ 
 // ---------- QR + link ----------
-const pageUrl = "https://kimnicole1a-hash.github.io/guest-album/";
-
+const pageUrl = window.location.href;
 document.getElementById('pageLink').value = pageUrl;
-
 new QRCode(document.getElementById('qrBox'), {
   text: pageUrl,
   width: 168,
   height: 168,
-  colorDark: "#880000",
-  colorLight: "#F8F4E9",
+  colorDark: "#2E2420",
+  colorLight: "#FFFFFF",
   correctLevel: QRCode.CorrectLevel.M
 });
-
 document.getElementById('copyBtn').addEventListener('click', async () => {
-  try {
+  try{
     await navigator.clipboard.writeText(pageUrl);
     const btn = document.getElementById('copyBtn');
     const old = btn.textContent;
     btn.textContent = "Copied";
-    setTimeout(() => btn.textContent = old, 1500);
-  } catch (e) { }
+    setTimeout(()=>btn.textContent = old, 1500);
+  }catch(e){ /* clipboard may be unavailable; input is selectable manually */ }
 });
-
+ 
 // ---------- Helpers ----------
 function hashAngle(str){
   let h = 0;
   for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) | 0; }
-  const norm = (Math.abs(h) % 160) / 160; // 0..1
-  return (norm * 16) - 8; // -8..8 deg
+  const norm = (Math.abs(h) % 160) / 160;
+  return (norm * 16) - 8;
 }
-
 function timeAgoLabel(ts){
   const d = new Date(ts);
   let h = d.getHours(), m = d.getMinutes();
@@ -399,45 +392,45 @@ function timeAgoLabel(ts){
   m = m < 10 ? '0'+m : m;
   return h+':'+m+' '+ampm;
 }
-
+ 
 // ---------- Gallery state ----------
 const seen = new Set();
 const garlandEl = document.getElementById('garland');
 const emptyState = document.getElementById('emptyState');
-
+ 
 function renderPhoto(key, data){
   if(seen.has(key)) return;
   seen.add(key);
   emptyState.style.display = 'none';
-
+ 
   const card = document.createElement('div');
   card.className = 'photo-peg';
   const rot = hashAngle(key);
   card.style.setProperty('--rot', rot.toFixed(1)+'deg');
   card.style.transform = 'rotate('+rot.toFixed(1)+'deg)';
-
+ 
   const img = document.createElement('img');
   img.src = data.img;
+  img.loading = 'lazy';
   img.alt = data.name ? ('Photo from '+data.name) : 'Wedding guest photo';
   card.appendChild(img);
-
+ 
   const clip = document.createElement('div');
   clip.className = 'clip';
-  clip.innerHTML = '<svg viewBox="0 0 16 20"><rect x="6" y="0" width="4" height="9" fill="#B98B3E"/><circle cx="8" cy="12" r="6" fill="#8a6a34"/></svg>';
+  clip.innerHTML = '<svg viewBox="0 0 16 20"><rect x="6" y="0" width="4" height="9" fill="#8C1D26"/><circle cx="8" cy="12" r="6" fill="#6E1720"/></svg>';
   card.appendChild(clip);
-
+ 
   const cap = document.createElement('div');
   cap.className = 'cap';
   cap.textContent = (data.name ? data.name+' · ' : '') + timeAgoLabel(data.ts);
   card.appendChild(cap);
-
+ 
   card.addEventListener('click', () => openLightbox(data));
-
   garlandEl.appendChild(card);
 }
-
+ 
 function openLightbox(data){
-  document.getElementById('lightboxImg').src = data.img;
+  document.getElementById('lightboxImg').src = data.full || data.img;
   document.getElementById('lightboxCap').textContent = (data.name ? data.name+' · ' : '') + timeAgoLabel(data.ts);
   document.getElementById('lightbox').classList.add('open');
 }
@@ -447,34 +440,46 @@ document.getElementById('lightboxClose').addEventListener('click', ()=>{
 document.getElementById('lightbox').addEventListener('click', (e)=>{
   if(e.target.id === 'lightbox') e.currentTarget.classList.remove('open');
 });
-
+ 
+// ---------- Google Drive gallery + upload ----------
 async function refreshGallery(){
+  if(!SCRIPT_CONFIGURED) return;
   try{
-    const listing = await window.storage.list('photo:', true);
-    if(!listing || !listing.keys) return;
-    const newKeys = listing.keys.filter(k => !seen.has(k));
-    // fetch oldest-missing first isn't guaranteed ordering; sort by embedded timestamp in key
-    newKeys.sort();
-    for(const key of newKeys){
-      try{
-        const res = await window.storage.get(key, true);
-        if(res && res.value){
-          const data = JSON.parse(res.value);
-          renderPhoto(key, data);
-        }
-      }catch(e){ /* skip a bad entry */ }
-    }
-  }catch(e){ /* storage not available right now; try again next interval */ }
+    const res = await fetch(DRIVE_SCRIPT_URL, { method:'GET' });
+    const json = await res.json();
+    if(!json || !json.ok || !Array.isArray(json.photos)) return;
+    json.photos
+      .sort((a,b)=>a.ts-b.ts)
+      .forEach(p => {
+        renderPhoto('photo:'+p.id, { img: p.url, full: p.fullUrl, name: p.guestName, ts: p.ts });
+      });
+  }catch(e){ /* try again next interval */ }
 }
-
+ 
+async function uploadToDrive(dataUrl, filename, guestName){
+  const res = await fetch(DRIVE_SCRIPT_URL, {
+    method:'POST',
+    headers:{ 'Content-Type':'text/plain;charset=utf-8' }, // avoids a CORS preflight
+    body: JSON.stringify({ imageBase64: dataUrl, filename, mimeType:'image/jpeg', guestName })
+  });
+  return res.json();
+}
+ 
 // ---------- Upload flow ----------
 const addBtn = document.getElementById('addBtn');
 const fileInput = document.getElementById('fileInput');
 const statusMsg = document.getElementById('statusMsg');
 const guestNameInput = document.getElementById('guestName');
-
-addBtn.addEventListener('click', () => fileInput.click());
-
+ 
+addBtn.addEventListener('click', () => {
+  if(!SCRIPT_CONFIGURED){
+    statusMsg.textContent = "Album setup isn't finished yet — ask your host.";
+    setTimeout(()=> statusMsg.textContent='', 4000);
+    return;
+  }
+  fileInput.click();
+});
+ 
 function compressImage(file){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -500,7 +505,7 @@ function compressImage(file){
     reader.readAsDataURL(file);
   });
 }
-
+ 
 fileInput.addEventListener('change', async (e) => {
   const files = Array.from(e.target.files || []);
   if(files.length === 0) return;
@@ -508,16 +513,14 @@ fileInput.addEventListener('change', async (e) => {
   let okCount = 0, failCount = 0;
   statusMsg.textContent = 'Uploading ' + files.length + ' photo' + (files.length>1?'s':'') + '...';
   addBtn.disabled = true;
-
+ 
   for(const file of files){
     try{
       const dataUrl = await compressImage(file);
-      const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
-      const key = 'photo:' + id;
-      const payload = JSON.stringify({ img: dataUrl, name: guestName, ts: Date.now() });
-      const result = await window.storage.set(key, payload, true);
-      if(result){
-        renderPhoto(key, { img: dataUrl, name: guestName, ts: Date.now() });
+      const filename = 'guest_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.jpg';
+      const json = await uploadToDrive(dataUrl, filename, guestName);
+      if(json && json.ok){
+        renderPhoto('photo:'+json.id, { img: dataUrl, name: guestName, ts: Date.now() });
         okCount++;
       } else {
         failCount++;
@@ -526,7 +529,7 @@ fileInput.addEventListener('change', async (e) => {
       failCount++;
     }
   }
-
+ 
   addBtn.disabled = false;
   fileInput.value = '';
   if(failCount === 0){
@@ -538,11 +541,14 @@ fileInput.addEventListener('change', async (e) => {
   }
   setTimeout(()=> statusMsg.textContent='', 4000);
 });
-
+ 
 // ---------- Boot ----------
+if(!SCRIPT_CONFIGURED){
+  emptyState.textContent = "Album setup isn't finished yet — the host still needs to connect Google Drive.";
+}
 refreshGallery();
-setInterval(refreshGallery, 6000);
+setInterval(refreshGallery, 8000);
 </script>
-
+ 
 </body>
 </html>
